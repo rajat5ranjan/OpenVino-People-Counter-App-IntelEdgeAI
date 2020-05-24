@@ -14,8 +14,6 @@ The people counter application will demonstrate how to create a smart video IoT 
 
 The counter will use the Inference Engine included in the Intel® Distribution of OpenVINO™ Toolkit. The model used should be able to identify people in a video frame. The app should count the number of people in the current frame, the duration that a person is in the frame (time elapsed between entering and exiting a frame) and the total count of people. It then sends the data to a local web server using the Paho MQTT Python package.
 
-You will choose a model to use and convert it with the Model Optimizer.
-
 ![architectural diagram](./images/arch_diagram.png)
 
 ## Requirements
@@ -24,7 +22,6 @@ You will choose a model to use and convert it with the Model Optimizer.
 
 * 6th to 10th generation Intel® Core™ processor with Iris® Pro graphics or Intel® HD Graphics.
 * OR use of Intel® Neural Compute Stick 2 (NCS2)
-* OR Udacity classroom workspace for the related course
 
 ### Software
 
@@ -33,8 +30,53 @@ You will choose a model to use and convert it with the Model Optimizer.
 *   Npm v3.10.10
 *   CMake
 *   MQTT Mosca server
+*   Python 3.5 or 3.6
   
-        
+  ### Model Selection & Custom Layers
+  
+  TensorFlow Object Detection Model Zoo (https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md) contains many pre-trained models on the coco dataset. 
+  
+  **Ssd_inception_v2_coco** and **faster_rcnn_inception_v2_coco** performed good as compared to rest of the models, but, in this project, **faster_rcnn_inception_v2_coco** is used which is fast in detecting people with less errors. 
+  
+  Intel openVINO already contains extensions for custom layers used in TensorFlow Object Detection Model Zoo.
+  
+  Downloading the model from the GitHub repository of Tensorflow Object Detection Model Zoo by the following command:
+
+```
+wget http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_v2_coco_2018_01_28.tar.gz
+```
+Extracting the tar.gz file by the following command:
+
+```
+tar -xvf faster_rcnn_inception_v2_coco_2018_01_28.tar.gz
+```
+Changing the directory to the extracted folder of the downloaded model:
+
+```
+cd faster_rcnn_inception_v2_coco_2018_01_28
+```
+The model can't be the existing models provided by Intel. So, converting the TensorFlow model to Intermediate Representation (IR) or OpenVINO IR format. The command used is given below:
+
+```
+python /opt/intel/openvino/deployment_tools/model_optimizer/mo.py --input_model faster_rcnn_inception_v2_coco_2018_01_28/frozen_inference_graph.pb --tensorflow_object_detection_api_pipeline_config pipeline.config --reverse_input_channels --tensorflow_use_custom_operations_config /opt/intel/openvino/deployment_tools/model_optimizer/extensions/front/tf/faster_rcnn_support.json
+```
+
+### Comparing Model Performance
+
+**Model-1: Ssd_inception_v2_coco_2018_01_28**
+
+Converted the model to intermediate representation using the following command. Further, this model lacked accuracy as it didn't detect people correctly in the video. Made some alterations to the threshold for increasing its accuracy but the results were not fruitful.
+```
+python /opt/intel/openvino/deployment_tools/model_optimizer/mo.py --input_model ssd_inception_v2_coco_2018_01_28/frozen_inference_graph.pb --tensorflow_object_detection_api_pipeline_config pipeline.config --reverse_input_channels --tensorflow_use_custom_operations_config /opt/intel/openvino/deployment_tools/model_optimizer/extensions/front/tf/ssd_v2_support.json
+```
+
+**Model-2: Faster_rcnn_inception_v2_coco_2018_01_28**
+
+Converted the model to intermediate representation using the following command. Model -2 i.e. Faster_rcnn_inception_v2_coco, performed really well in the output video. After using a threshold of 0.4, the model works better than all the previous approaches.
+```
+python /opt/intel/openvino/deployment_tools/model_optimizer/mo.py --input_model faster_rcnn_inception_v2_coco_2018_01_28/frozen_inference_graph.pb --tensorflow_object_detection_api_pipeline_config pipeline.config --reverse_input_channels --tensorflow_use_custom_operations_config /opt/intel/openvino/deployment_tools/model_optimizer/extensions/front/tf/faster_rcnn_support.json
+```
+
 ## Setup
 
 ### Install Intel® Distribution of OpenVINO™ toolkit
@@ -82,14 +124,7 @@ From the main directory:
    npm config set registry "http://registry.npmjs.org"
    npm install
    ```
-
-## What model to use
-
-It is up to you to decide on what model to use for the application. You need to find a model not already converted to Intermediate Representation format (i.e. not one of the Intel® Pre-Trained Models), convert it, and utilize the converted model in your application.
-
-Note that you may need to do additional processing of the output to handle incorrect detections, such as adjusting confidence threshold or accounting for 1-2 frames where the model fails to see a person already counted and would otherwise double count.
-
-**If you are otherwise unable to find a suitable model after attempting and successfully converting at least three other models**, you can document in your write-up what the models were, how you converted them, and why they failed, and then utilize any of the Intel® Pre-Trained Models that may perform better.
+   
 
 ## Run the application
 
@@ -152,9 +187,15 @@ When running Intel® Distribution of OpenVINO™ toolkit Python applications on 
 
 Though by default application runs on CPU, this can also be explicitly specified by ```-d CPU``` command-line argument:
 
+**Sample**
 ```
 python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m your-model.xml -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.6 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
 ```
+### Running Your Main Code
+```
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m faster_rcnn_inception_v2_coco_2018_01_28/frozen_inference_graph.xml -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.4 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+```
+
 If you are in the classroom workspace, use the “Open App” button to view the output. If working locally, to see the output on a web based interface, open the link [http://0.0.0.0:3004](http://0.0.0.0:3004/) in a browser.
 
 #### Running on the Intel® Neural Compute Stick
