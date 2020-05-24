@@ -247,3 +247,21 @@ MQTT_SERVER: "ws://localhost:3002"
 ![s2](./images/s2.png)
 ![s3](./images/s3.png)
 ![s4](./images/s4.png)
+![s5](./images/s5.png)
+
+## About Me
+
+|Site|Links|
+|---|---|
+| Linked In | https://www.linkedin.com/in/rajat-ranjan24/|
+|Analytics Vidya | https://datahack.analyticsvidhya.com/user/profile/rajat5ranjan|
+|GitHub| https://github.com/rajat5ranjan/|
+|Kaggle |https://www.kaggle.com/rajatranjan/|
+|HackerEarth|http://www.hackerearth.com/@rajat5ranjan|
+
+For more details
+|Site|Links|
+|---|---|
+|Website | https://rajat5ranjan.github.io |
+|Gmail| rajat5ranjan@gmail.com|
+
