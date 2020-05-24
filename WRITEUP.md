@@ -47,16 +47,21 @@ In investigating potential people counter models, I tried each of the following 
   - Converted the model to intermediate representation using the following command. Model -2 i.e. Faster_rcnn_inception_v2_coco, performed really well in the output video. After using a threshold of 0.4, the model works better than the previous approaches.
   - After managing the shape attribute it worked quite well.
   
+- Model 3: [person-detection-retail-0013]
+  -[https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_detection_retail_0013_description_person_detection_retail_0013.html]
+  - So eagerly wanted to try this out, but as i started late, i was behind my project submission.
+  - Will be trying it after the project submission deadline ends and provide my findings.
+  
 ## Comparing Model Performance
 
 Comparing the two models i.e. ssd_inception_v2_coco and faster_rcnn_inception_v2_coco in terms of latency and memory, several insights were drawn. It could be clearly seen that the Latency (microseconds) and Memory (Mb) decreases in case of OpenVINO as compared to plain Tensorflow model which is very useful in case of OpenVINO applications.
 
 | Model/Framework                             | Latency (microseconds)            | Memory (Mb) |
 | -----------------------------------         |:---------------------------------:| -------:|
-| ssd_inception_v2_coco (plain TF)            | 222                               | 538    |
-| ssd_inception_v2_coco (OpenVINO)            | 155                               | 329    |
-| faster_rcnn_inception_v2_coco (plain TF)    | 1281                              | 562    |
-| faster_rcnn_inception_v2_coco (OpenVINO)    | 889                               | 281    |
+| ssd_inception_v2_coco (plain TF)            | 229                               | 538    |
+| ssd_inception_v2_coco (OpenVINO)            | 150                               | 329    |
+| faster_rcnn_inception_v2_coco (plain TF)    | 1279                              | 562    |
+| faster_rcnn_inception_v2_coco (OpenVINO)    | 891                              | 281    |
 
 ## Assess Model Use Cases
 
