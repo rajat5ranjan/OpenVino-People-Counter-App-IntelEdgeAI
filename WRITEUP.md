@@ -39,12 +39,11 @@ In investigating potential people counter models, I tried each of the following 
 - Model 1: [Ssd_inception_v2_coco]
   - [https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md]
   - Converted the model to intermediate representation using the following command. Further, this model lacked accuracy as it didn't detect people correctly in the video. 
-  - Made some alterations to the threshold for increasing its accuracy but the results were not fruitful.
   - The model was insufficient for the app because when i tested it failed on intervals and it didn't found the bounding boxes around the person and for next person.
   
 - Model 2: [Faster_rcnn_inception_v2_coco_2018_01_28]
   - [https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md]
-  - Converted the model to intermediate representation using the following command. Model -2 i.e. Faster_rcnn_inception_v2_coco, performed really well in the output video. After using a threshold of 0.4, the model works better than the previous approaches.
+  - Converted the model to intermediate representation using the following command. it performed really well in the output video. The model works better than the previous approaches.
   - After managing the shape attribute it worked quite well.
   
 - Model 3: [person-detection-retail-0013]
@@ -71,7 +70,7 @@ Some of the potential use cases of the people counter app are:
 
 * Customer Traffic inside warehouses could help in mitigating risk factors. Also it can help to provide visitor analytics.
 
-* Each of these use cases would be useful in a shopping center, retail chain, library, sporting venue, Bank, restaurant etc. People Counting data will help you make well-informed decisions about your business.
+* Each of these use cases would be useful in a any Shopping Center, Retail Chain, Library, Bank etc. Counting data will help you make well-informed decisions about your business and your data analytics team to make informed decision.
 
 * Controlling the number of people present in a particular area. Further, with some updations, this could also prove helpful in the current COVID-19 scenario i.e. to keep a check on the number of people in the frame.
 
@@ -81,6 +80,6 @@ Some of the potential use cases of the people counter app are:
 
 Lighting, model accuracy, and camera focal length/image size have different effects on a
 deployed edge model. The potential effects of each of these are as follows...
-* Determining various models and their accuracy based on the frames
+* Determining various models and their accuracy based on the frame size.
 * Better be the model accuracy more are the chances to obtain the desired results through an app deployed at edge.
 * Focal length/image also have a effect as better be the pixel quality of image or better the camera focal length,more clear results we will obtain.
