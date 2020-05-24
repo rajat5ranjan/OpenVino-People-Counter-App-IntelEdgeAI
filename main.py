@@ -19,9 +19,9 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-"""
-@author : Rajat Ranjan
-rajat5ranjan@gmail.com
+"""	
+@author : Rajat Ranjan	
+rajat5ranjan@gmail.com	
 """
 
 import os
@@ -112,10 +112,12 @@ def infer_on_stream(args, client):
         input_validated = args.input
 
     # Checks for video file
-    else:
+    elif args.input.endswith('.mp4') or args.input.endswith('.avi'):
         input_validated = args.input
         assert os.path.isfile(args.input), "file doesn't exist"
-
+    else :
+        log.error("File is not correct")
+        return
     ### TODO: Handle the input stream ###
     cap = cv2.VideoCapture(input_validated)
     cap.open(input_validated)
@@ -185,7 +187,8 @@ def infer_on_stream(args, client):
                     if dur == 3 and counter > counter_prev:
                         counter_total += counter - counter_prev
                     elif dur == 3 and counter < counter_prev:
-                        duration_report = int((duration_prev / 10.0) * 1000)
+                        #changed from (duration_prev / 10.0)*1000 to normal
+                        duration_report = int(duration_prev)
             ### TODO: Calculate and send relevant information on ###
             ### current_count, total_count and duration to the MQTT server ###
             ### Topic "person": keys of "count" and "total" ###
