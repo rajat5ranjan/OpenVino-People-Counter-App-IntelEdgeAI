@@ -241,3 +241,9 @@ CAMERA_FEED_SERVER: "http://localhost:3004"
 ...
 MQTT_SERVER: "ws://localhost:3002"
 ```
+
+## Screenshots
+![s1](./images/s1.png)
+![s2](./images/s2.png)
+![s3](./images/s3.png)
+![s4](./images/s4.png)
