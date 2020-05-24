@@ -115,6 +115,7 @@ def infer_on_stream(args, client):
     elif args.input.endswith('.mp4') or args.input.endswith('.avi'):
         input_validated = args.input
         assert os.path.isfile(args.input), "file doesn't exist"
+    # Logs error if file does not satisfy the above conditions
     else :
         log.error("File is not correct")
         return
