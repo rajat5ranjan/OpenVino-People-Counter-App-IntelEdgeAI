@@ -22,6 +22,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+"""
+@author : Rajat Ranjan
+rajat5ranjan@gmail.com
+"""
 import os
 import sys
 import logging as log
@@ -52,7 +56,7 @@ class Network:
         self.plugin = IECore()
         self.network = IENetwork(model=model_xml, weights=model_bin)
         ### TODO: Check for supported layers ###
-        if not all_layers_supported(self.plugin, self.network, console_output=console_output):
+        if not is_all_layers_supported(self.plugin, self.network, console_output=console_output):
             self.plugin.add_extension(CPU_EXTENSION, DEVICE)
             
         self.exec_network = self.plugin.load_network(self.network, DEVICE)
@@ -92,7 +96,7 @@ class Network:
         out = self.infer_request_handle.outputs[self.output_blob]
         return out
     
-def all_layers_supported(engine, network, console_output=False):
+def is_all_layers_supported(engine, network, console_output=False):
     ### TODO check if all layers are supported
     ### return True if all supported, False otherwise
     layers_supported = engine.query_network(network, device_name='CPU')
