@@ -19,6 +19,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+"""
+@author : Rajat Ranjan
+rajat5ranjan@gmail.com
+"""
 
 import os
 import sys
